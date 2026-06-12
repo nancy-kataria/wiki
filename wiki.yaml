@@ -35,7 +35,7 @@ graph:
 site:
   manifest:
     # Site name in layout chrome and manifest.webmanifest.
-    name: Wiki CLI
+    name: Nancy's wiki
     theme_color: "#e6d5f5"
     # icons:
     #   - src: assets/icon-192.png
