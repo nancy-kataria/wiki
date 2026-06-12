@@ -1,0 +1,1773 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="theme-color" content="#e6d5f5">
+<meta name="msapplication-TileColor" content="#e6d5f5">
+<link rel="manifest" href="/wiki/manifest.webmanifest">
+<title>Person shape - Nancy&#x27;s wiki</title>
+<style>/* Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap');
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  line-height: 1.6;
+  color: #202122;
+  background: #f6f6f6;
+  min-height: 100vh;
+}
+
+a {
+  color: #0645ad;
+  text-decoration: none;
+  transition: color 0.1s ease;
+}
+
+a:hover {
+  text-decoration: underline;
+  color: #0b0080;
+}
+
+/* Sidebar Styling */
+#mw-navigation {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 11em;
+  padding: 24px 16px;
+  font-size: 0.85em;
+  background: #f6f6f6;
+}
+
+#p-logo {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+#p-logo a {
+  display: inline-block;
+  transition: transform 0.2s ease;
+}
+
+#p-logo a:hover {
+  transform: scale(1.05);
+}
+
+.logo-text {
+  display: block;
+  font-weight: 700;
+  font-size: 1.1em;
+  color: #202122;
+  margin-top: 8px;
+  letter-spacing: -0.5px;
+}
+
+.portal {
+  margin-bottom: 20px;
+}
+
+.portal h3 {
+  font-size: 0.75em;
+  color: #72777d;
+  text-transform: uppercase;
+  font-weight: 600;
+  margin-bottom: 8px;
+  border-bottom: 1px solid #c8ccd1;
+  padding-bottom: 4px;
+  letter-spacing: 0.5px;
+}
+
+.portal ul {
+  list-style: none;
+  padding-left: 4px;
+}
+
+.portal li {
+  margin-bottom: 6px;
+}
+
+.portal a {
+  color: #54595d;
+}
+
+.portal a:hover {
+  color: #0645ad;
+}
+
+.portal-contents ul {
+  padding-left: 0;
+}
+
+.portal-contents li {
+  margin-bottom: 8px;
+  line-height: 1.3;
+}
+
+.portal-contents .l3 { padding-left: 10px; }
+.portal-contents .l4 { padding-left: 20px; }
+.portal-contents .l5 { padding-left: 30px; }
+.portal-contents .l6 { padding-left: 40px; }
+
+/* Search Box */
+#p-search {
+  position: relative;
+}
+
+.search-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  border: 1px solid #a2a9b1;
+  background: #fff;
+  padding: 4px 10px;
+  border-radius: 4px;
+  width: 280px;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.search-container:focus-within {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+.search-input {
+  border: none;
+  outline: none;
+  width: 100%;
+  font-size: 0.85em;
+  font-family: inherit;
+}
+
+.search-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #72777d;
+  font-size: 0.9em;
+  padding-left: 6px;
+}
+
+.search-suggestions {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  background: #fff;
+  border: 1px solid #c8ccd1;
+  z-index: 1000;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+  max-height: 300px;
+  overflow-y: auto;
+  border-radius: 6px;
+}
+
+.suggestion-item {
+  padding: 10px 14px;
+  cursor: pointer;
+  font-size: 0.85em;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #f6f6f6;
+  transition: background 0.15s;
+}
+
+.suggestion-item:hover, .suggestion-item.selected {
+  background: #f0f3f9;
+}
+
+.suggestion-item-empty {
+  cursor: default;
+  color: #72777d;
+}
+
+.suggestion-title {
+  font-weight: 600;
+  color: #202122;
+}
+
+.suggestion-type {
+  font-size: 0.75em;
+  color: #72777d;
+  background: #f1f5f9;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+/* Vector navigation tabs wrapper */
+.vector-navigation-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 16px;
+  margin-left: 11em;
+  padding: 8px 40px 0 0;
+  background: #f6f6f6;
+  border-bottom: 1px solid #a2a9b1;
+}
+
+.vector-navigation-left,
+.vector-navigation-right {
+  display: flex;
+  align-items: flex-end;
+}
+
+.vector-navigation-search {
+  margin-left: auto;
+  padding-bottom: 6px;
+}
+
+.vector-tabs {
+  display: flex;
+  list-style: none;
+}
+
+.vector-tabs li {
+  margin-right: 2px;
+}
+
+.vector-tabs a {
+  display: block;
+  padding: 8px 16px;
+  background: #eaecf0;
+  border: 1px solid #a2a9b1;
+  border-bottom: none;
+  border-radius: 4px 4px 0 0;
+  color: #54595d;
+  font-size: 0.8em;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  margin-bottom: -1px;
+}
+
+.vector-tabs li.selected a {
+  background: #ffffff;
+  border-color: #a2a9b1 #a2a9b1 #ffffff #a2a9b1;
+  color: #202122;
+  position: relative;
+  z-index: 2;
+  top: 1px;
+}
+
+.vector-tabs a:hover {
+  background: #f8f9fa;
+  color: #202122;
+}
+
+/* Main Content styling */
+#content {
+  margin-left: 11em;
+  background: #ffffff;
+  border-left: 1px solid #a2a9b1;
+  padding: 30px 40px 48px;
+  min-height: calc(100vh - 48px);
+}
+
+.firstHeading {
+  font-family: 'Playfair Display', 'Linux Libertine', Georgia, serif;
+  font-size: 2.2em;
+  font-weight: 600;
+  color: #000000;
+  margin-bottom: 12px;
+  line-height: 1.25;
+}
+
+#siteSub {
+  font-size: 0.8em;
+  color: #72777d;
+  margin-bottom: 20px;
+  font-style: italic;
+}
+
+/* Article content layout styling */
+#article-top h1 {
+  font-family: inherit;
+  font-size: 1.35em;
+  font-weight: 600;
+  margin: 0 0 16px;
+  line-height: 1.3;
+  border: none;
+}
+
+#article-top h2:first-of-type {
+  margin-top: 24px;
+}
+
+h2 {
+  font-family: 'Playfair Display', 'Linux Libertine', Georgia, serif;
+  font-size: 1.5em;
+  font-weight: 600;
+  border-bottom: 1px solid #a2a9b1;
+  padding-bottom: 4px;
+  margin-top: 32px;
+  margin-bottom: 16px;
+}
+
+h3 {
+  font-size: 1.2em;
+  margin-top: 24px;
+  margin-bottom: 12px;
+  font-weight: 600;
+}
+
+p {
+  margin-bottom: 18px;
+  line-height: 1.65;
+  color: #202122;
+  font-size: 0.95em;
+}
+
+ul, ol {
+  margin-bottom: 16px;
+  padding-left: 24px;
+  font-size: 0.95em;
+}
+
+li {
+  margin-bottom: 8px;
+}
+
+.vector-tabs {
+  margin: 0;
+  padding-left: 0;
+}
+
+.vector-tabs li {
+  margin-bottom: 0;
+}
+
+pre {
+  background: #1e1e2e;
+  color: #cdd6f4;
+  padding: 18px 20px;
+  line-height: 1.5;
+  border-radius: 6px;
+  overflow-x: auto;
+  margin-bottom: 16px;
+  font-size: 0.85em;
+  box-shadow: inset 0 2px 8px rgba(0,0,0,0.15);
+}
+
+code {
+  background: #f1f5f9;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.85em;
+  color: #0f172a;
+}
+
+pre code {
+  background: none;
+  padding: 0;
+  color: inherit;
+}
+
+.code-block {
+  position: relative;
+  display: flow-root;
+  margin-bottom: 16px;
+}
+
+.code-block pre {
+  margin-bottom: 0;
+}
+
+.code-copy-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 1;
+  background-color: rgba(248, 249, 250, 0.92);
+  color: #202122;
+  border: 1px solid #a2a9b1;
+  padding: 4px 10px;
+  font-size: 0.75em;
+  font-weight: 600;
+  border-radius: 4px;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.15s ease, background-color 0.15s ease;
+}
+
+.code-block:hover .code-copy-btn,
+.code-block:focus-within .code-copy-btn,
+.code-copy-btn:focus {
+  opacity: 1;
+}
+
+.code-copy-btn:hover {
+  background-color: #eaecf0;
+}
+
+.code-copy-btn-copied {
+  background-color: #28a745 !important;
+  color: #fff !important;
+  border-color: #28a745 !important;
+  opacity: 1 !important;
+}
+
+hr {
+  margin: 24px 0;
+  border: none;
+  border-top: 1px solid #a2a9b1;
+}
+
+blockquote {
+  border-left: 4px solid #3b82f6;
+  padding-left: 16px;
+  color: #475569;
+  font-style: italic;
+  margin: 16px 0 20px;
+}
+
+/* Table styling */
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin-bottom: 24px;
+  font-size: 0.9em;
+}
+
+th, td {
+  border: 1px solid #dbe4f0;
+  padding: 10px 14px;
+  text-align: left;
+}
+
+th {
+  background: #f8fafc;
+  font-weight: 600;
+  color: #334155;
+}
+
+/* Table of Contents (TOC) */
+.toc {
+  border: 1px solid #a2a9b1;
+  background-color: #f8f9fa;
+  padding: 12px 18px;
+  font-size: 0.9em;
+  display: table;
+  margin-bottom: 24px;
+  border-radius: 4px;
+  min-width: 240px;
+}
+
+.toctitle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.toctitle h2 {
+  font-family: inherit;
+  font-size: 1em;
+  font-weight: bold;
+  border: none;
+  margin: 0;
+  padding: 0;
+}
+
+.toctogglelink {
+  font-size: 0.8em;
+  font-weight: normal;
+  color: #0645ad;
+  cursor: pointer;
+  user-select: none;
+}
+
+.toc-list {
+  list-style: none;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.toc-list li {
+  margin-bottom: 4px;
+}
+
+.toc-list .l3 { padding-left: 16px; }
+.toc-list .l4 { padding-left: 32px; }
+.toc-list .l5 { padding-left: 48px; }
+.toc-list .l6 { padding-left: 64px; }
+
+/* Infobox Styling (preserving class names for compatibility) */
+.infobox {
+  float: right;
+  width: 300px;
+  margin: 0 0 20px 24px;
+  background: #f8f9fa;
+  border: 1px solid #a2a9b1;
+  border-radius: 4px;
+  padding: 12px;
+  clear: none;
+  font-size: 0.85em;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+}
+
+.infobox h2 {
+  font-family: inherit;
+  font-size: 1.15em;
+  border: none;
+  margin: 0 0 10px;
+  text-align: center;
+  background: #eaecf0;
+  padding: 8px;
+  color: #202122;
+  font-weight: bold;
+  border-radius: 2px;
+}
+
+.infobox dl {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  gap: 8px 12px;
+  padding: 0 4px;
+}
+
+.infobox dt {
+  font-weight: 600;
+  color: #54595d;
+  border-bottom: 1px solid #eaecf0;
+  padding-bottom: 6px;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.infobox dd {
+  margin: 0;
+  min-width: 0;
+  border-bottom: 1px solid #eaecf0;
+  padding-bottom: 6px;
+  color: #202122;
+  overflow-wrap: anywhere;
+}
+
+.infobox-list {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 6px;
+  max-width: 100%;
+  min-width: 0;
+}
+
+.infobox-list > li {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.infobox-chip {
+  display: block;
+  border: 1px solid #dbe4f0;
+  border-radius: 4px;
+  padding: 2px 8px;
+  background: #ffffff;
+  font-size: 0.9em;
+  max-width: 100%;
+  box-sizing: border-box;
+  overflow-wrap: anywhere;
+}
+
+.infobox-dict {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.infobox-dict-row {
+  display: grid;
+  grid-template-columns: minmax(0, auto) minmax(0, 1fr);
+  gap: 4px 8px;
+  padding: 4px 6px;
+  background: #ffffff;
+  border: 1px solid #dbe4f0;
+  border-radius: 4px;
+  font-size: 0.95em;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.infobox-dict-row > span:last-child {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.infobox-key {
+  font-weight: 600;
+  color: #54595d;
+  overflow-wrap: anywhere;
+}
+
+/* Category Links box */
+.catlinks {
+  border: 1px solid #a2a9b1;
+  background-color: #f8f9fa;
+  padding: 10px 16px;
+  margin-top: 40px;
+  clear: both;
+  font-size: 0.85em;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.catlinks-label {
+  font-weight: bold;
+  color: #72777d;
+}
+
+.catlinks-list {
+  display: flex;
+  gap: 8px;
+  list-style: none;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.catlinks-item::after {
+  content: " |";
+  color: #a2a9b1;
+  margin-left: 8px;
+}
+
+.catlinks-item:last-child::after {
+  content: "";
+}
+
+/* Views panes */
+.wiki-view-pane {
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Notes Textarea and Buttons */
+textarea.wiki-textarea {
+  width: 100%;
+  height: 350px;
+  padding: 16px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.95em;
+  border: 1px solid #a2a9b1;
+  border-radius: 6px;
+  outline: none;
+  resize: vertical;
+  margin-top: 12px;
+  transition: border-color 0.2s;
+}
+
+textarea.wiki-textarea:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+.wiki-btn-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 12px;
+}
+
+.wiki-btn {
+  background-color: #f8f9fa;
+  color: #202122;
+  border: 1px solid #a2a9b1;
+  padding: 8px 16px;
+  font-size: 0.85em;
+  font-weight: 600;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.wiki-btn:hover {
+  background-color: #eaecf0;
+}
+
+.wiki-btn-primary {
+  background-color: #3b82f6;
+  color: #ffffff;
+  border-color: #2563eb;
+}
+
+.wiki-btn-primary:hover {
+  background-color: #2563eb;
+}
+
+.char-counter {
+  font-size: 0.8em;
+  color: #72777d;
+}
+
+/* Page footer */
+.wiki-footer {
+  margin-top: 48px;
+  border-top: 1px solid #eaecf0;
+  padding-top: 16px;
+  font-size: 0.75em;
+  color: #72777d;
+  line-height: 1.6;
+}
+
+/* Backlinks / outline sections in Read view */
+.page-meta {
+  background: #f8f9fa;
+  border: 1px solid #eaecf0;
+  border-radius: 6px;
+  padding: 16px;
+  margin-top: 32px;
+}
+
+.page-meta h2 {
+  font-family: inherit;
+  font-size: 1.1em;
+  border: none;
+  margin-top: 0;
+  margin-bottom: 12px;
+  color: #54595d;
+}
+
+.metadata-panel.page-meta {
+  padding: 10px 12px;
+  margin-top: 12px;
+}
+
+.metadata-panel.page-meta h2 {
+  display: none;
+}
+
+#view-metadata-content .firstHeading {
+  font-size: 1.5em;
+  margin-bottom: 2px;
+}
+
+#view-metadata-content #siteSub {
+  margin-bottom: 10px;
+  font-size: 0.75em;
+}
+
+.metadata-format-switch {
+  position: relative;
+}
+
+.metadata-format-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 6px;
+  margin-bottom: 6px;
+}
+
+.metadata-format-heading {
+  margin: 0;
+  font-size: 0.72em;
+  font-weight: 600;
+  color: #54595d;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  flex: 0 0 auto;
+}
+
+.metadata-format-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  flex: 1 1 auto;
+}
+
+.metadata-format-input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.metadata-format-label {
+  display: inline-block;
+  margin: 0;
+  padding: 2px 7px;
+  border: 1px solid #c8ccd1;
+  border-radius: 4px;
+  background: #fff;
+  color: #202122;
+  font-size: 0.72em;
+  font-weight: 600;
+  line-height: 1.3;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.metadata-format-label:hover {
+  background: #eaecf0;
+}
+
+.metadata-format-panels {
+  margin-top: 0;
+}
+
+.metadata-format-panel {
+  display: none;
+}
+
+.metadata-format-panel .highlight {
+  margin: 0;
+}
+
+.metadata-format-panel pre {
+  margin: 0;
+  padding: 8px 10px !important;
+  font-size: 0.8em;
+  line-height: 1.35;
+}
+
+#view-metadata-content:target {
+  display: block !important;
+}
+
+/* Template Label badge */
+.layout-label {
+  display: inline-block;
+  margin-bottom: 10px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: #e0f2fe;
+  color: #0369a1;
+  font-size: 0.65rem;
+  font-weight: 700;
+  line-height: 1.2;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  #mw-navigation {
+    position: relative;
+    width: 100%;
+    border-bottom: 1px solid #eaecf0;
+  }
+  .vector-navigation-wrapper {
+    margin-left: 0;
+    padding: 8px 16px 0;
+    flex-wrap: wrap;
+    align-items: stretch;
+  }
+  .vector-navigation-left,
+  .vector-navigation-right {
+    order: 2;
+  }
+  .vector-navigation-search {
+    order: 1;
+    width: 100%;
+    margin-left: 0;
+    padding-bottom: 8px;
+  }
+  .search-container {
+    width: 100%;
+  }
+  #content {
+    margin-left: 0;
+    padding: 24px 16px;
+    border-left: none;
+  }
+  .infobox {
+    float: none;
+    width: 100%;
+    margin: 20px 0;
+  }
+}
+
+.metadata-format-switch:has(.metadata-format-input[value="json-ld-compacted"]:checked) .metadata-format-panel-json-ld-compacted { display: block; }
+.metadata-format-input[value="json-ld-compacted"]:checked + .metadata-format-label { background: #36c; color: #fff; border-color: #36c; }
+.metadata-format-switch:has(.metadata-format-input[value="turtle"]:checked) .metadata-format-panel-turtle { display: block; }
+.metadata-format-input[value="turtle"]:checked + .metadata-format-label { background: #36c; color: #fff; border-color: #36c; }
+.metadata-format-switch:has(.metadata-format-input[value="n3"]:checked) .metadata-format-panel-n3 { display: block; }
+.metadata-format-input[value="n3"]:checked + .metadata-format-label { background: #36c; color: #fff; border-color: #36c; }
+.metadata-format-switch:has(.metadata-format-input[value="xml"]:checked) .metadata-format-panel-xml { display: block; }
+.metadata-format-input[value="xml"]:checked + .metadata-format-label { background: #36c; color: #fff; border-color: #36c; }
+.metadata-format-switch:has(.metadata-format-input[value="nt"]:checked) .metadata-format-panel-nt { display: block; }
+.metadata-format-input[value="nt"]:checked + .metadata-format-label { background: #36c; color: #fff; border-color: #36c; }
+.metadata-format-switch:has(.metadata-format-input[value="trig"]:checked) .metadata-format-panel-trig { display: block; }
+.metadata-format-input[value="trig"]:checked + .metadata-format-label { background: #36c; color: #fff; border-color: #36c; }
+.metadata-format-switch:has(.metadata-format-input[value="nquads"]:checked) .metadata-format-panel-nquads { display: block; }
+.metadata-format-input[value="nquads"]:checked + .metadata-format-label { background: #36c; color: #fff; border-color: #36c; }
+
+pre { line-height: 125%; }
+td.linenos .normal { color: #aaaaaa; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: #aaaaaa; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.highlight .hll { background-color: #404040 }
+.highlight { background: #202020; color: #d0d0d0 }
+.highlight .c { color: #ababab; font-style: italic } /* Comment */
+.highlight .err { color: #a61717; background-color: #e3d2d2 } /* Error */
+.highlight .esc { color: #d0d0d0 } /* Escape */
+.highlight .g { color: #d0d0d0 } /* Generic */
+.highlight .k { color: #6ebf26; font-weight: bold } /* Keyword */
+.highlight .l { color: #d0d0d0 } /* Literal */
+.highlight .n { color: #d0d0d0 } /* Name */
+.highlight .o { color: #d0d0d0 } /* Operator */
+.highlight .x { color: #d0d0d0 } /* Other */
+.highlight .p { color: #d0d0d0 } /* Punctuation */
+.highlight .ch { color: #ababab; font-style: italic } /* Comment.Hashbang */
+.highlight .cm { color: #ababab; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #ff3a3a; font-weight: bold } /* Comment.Preproc */
+.highlight .cpf { color: #ababab; font-style: italic } /* Comment.PreprocFile */
+.highlight .c1 { color: #ababab; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #e50808; font-weight: bold; background-color: #520000 } /* Comment.Special */
+.highlight .gd { color: #ff3a3a } /* Generic.Deleted */
+.highlight .ge { color: #d0d0d0; font-style: italic } /* Generic.Emph */
+.highlight .ges { color: #d0d0d0; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.highlight .gr { color: #ff3a3a } /* Generic.Error */
+.highlight .gh { color: #ffffff; font-weight: bold } /* Generic.Heading */
+.highlight .gi { color: #589819 } /* Generic.Inserted */
+.highlight .go { color: #cccccc } /* Generic.Output */
+.highlight .gp { color: #aaaaaa } /* Generic.Prompt */
+.highlight .gs { color: #d0d0d0; font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #ffffff; text-decoration: underline } /* Generic.Subheading */
+.highlight .gt { color: #ff3a3a } /* Generic.Traceback */
+.highlight .kc { color: #6ebf26; font-weight: bold } /* Keyword.Constant */
+.highlight .kd { color: #6ebf26; font-weight: bold } /* Keyword.Declaration */
+.highlight .kn { color: #6ebf26; font-weight: bold } /* Keyword.Namespace */
+.highlight .kp { color: #6ebf26 } /* Keyword.Pseudo */
+.highlight .kr { color: #6ebf26; font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #6ebf26; font-weight: bold } /* Keyword.Type */
+.highlight .ld { color: #d0d0d0 } /* Literal.Date */
+.highlight .m { color: #51b2fd } /* Literal.Number */
+.highlight .s { color: #ed9d13 } /* Literal.String */
+.highlight .na { color: #bbbbbb } /* Name.Attribute */
+.highlight .nb { color: #2fbccd } /* Name.Builtin */
+.highlight .nc { color: #71adff; text-decoration: underline } /* Name.Class */
+.highlight .no { color: #40ffff } /* Name.Constant */
+.highlight .nd { color: #ffa500 } /* Name.Decorator */
+.highlight .ni { color: #d0d0d0 } /* Name.Entity */
+.highlight .ne { color: #bbbbbb } /* Name.Exception */
+.highlight .nf { color: #71adff } /* Name.Function */
+.highlight .nl { color: #d0d0d0 } /* Name.Label */
+.highlight .nn { color: #71adff; text-decoration: underline } /* Name.Namespace */
+.highlight .nx { color: #d0d0d0 } /* Name.Other */
+.highlight .py { color: #d0d0d0 } /* Name.Property */
+.highlight .nt { color: #6ebf26; font-weight: bold } /* Name.Tag */
+.highlight .nv { color: #40ffff } /* Name.Variable */
+.highlight .ow { color: #6ebf26; font-weight: bold } /* Operator.Word */
+.highlight .pm { color: #d0d0d0 } /* Punctuation.Marker */
+.highlight .w { color: #666666 } /* Text.Whitespace */
+.highlight .mb { color: #51b2fd } /* Literal.Number.Bin */
+.highlight .mf { color: #51b2fd } /* Literal.Number.Float */
+.highlight .mh { color: #51b2fd } /* Literal.Number.Hex */
+.highlight .mi { color: #51b2fd } /* Literal.Number.Integer */
+.highlight .mo { color: #51b2fd } /* Literal.Number.Oct */
+.highlight .sa { color: #ed9d13 } /* Literal.String.Affix */
+.highlight .sb { color: #ed9d13 } /* Literal.String.Backtick */
+.highlight .sc { color: #ed9d13 } /* Literal.String.Char */
+.highlight .dl { color: #ed9d13 } /* Literal.String.Delimiter */
+.highlight .sd { color: #ed9d13 } /* Literal.String.Doc */
+.highlight .s2 { color: #ed9d13 } /* Literal.String.Double */
+.highlight .se { color: #ed9d13 } /* Literal.String.Escape */
+.highlight .sh { color: #ed9d13 } /* Literal.String.Heredoc */
+.highlight .si { color: #ed9d13 } /* Literal.String.Interpol */
+.highlight .sx { color: #ffa500 } /* Literal.String.Other */
+.highlight .sr { color: #ed9d13 } /* Literal.String.Regex */
+.highlight .s1 { color: #ed9d13 } /* Literal.String.Single */
+.highlight .ss { color: #ed9d13 } /* Literal.String.Symbol */
+.highlight .bp { color: #2fbccd } /* Name.Builtin.Pseudo */
+.highlight .fm { color: #71adff } /* Name.Function.Magic */
+.highlight .vc { color: #40ffff } /* Name.Variable.Class */
+.highlight .vg { color: #40ffff } /* Name.Variable.Global */
+.highlight .vi { color: #40ffff } /* Name.Variable.Instance */
+.highlight .vm { color: #40ffff } /* Name.Variable.Magic */
+.highlight .il { color: #51b2fd } /* Literal.Number.Integer.Long */</style>
+</head>
+<body class="wiki-page layout-default" data-page-kind="article">
+
+<!-- Left Navigation Sidebar -->
+<aside id="mw-navigation">
+  <div id="p-logo" role="banner">
+    <a href="/wiki/" title="Visit the main page">
+      <svg viewBox="0 0 200 200" width="80" height="80" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="globeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#e6d5f5" />
+      <stop offset="100%" stop-color="#7e7586" />
+    </linearGradient>
+    <linearGradient id="gridGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.8" />
+      <stop offset="100%" stop-color="#f3ecfa" stop-opacity="0.3" />
+    </linearGradient>
+  </defs>
+  <circle cx="100" cy="100" r="80" fill="url(#globeGrad)" />
+  <path d="M 100 20 Q 50 100 100 180" fill="none" stroke="url(#gridGrad)" stroke-width="3" />
+  <path d="M 100 20 Q 150 100 100 180" fill="none" stroke="url(#gridGrad)" stroke-width="3" />
+  <path d="M 100 20 Q 10 100 100 180" fill="none" stroke="url(#gridGrad)" stroke-width="1.5" stroke-dasharray="3,3" />
+  <path d="M 100 20 Q 190 100 100 180" fill="none" stroke="url(#gridGrad)" stroke-width="1.5" stroke-dasharray="3,3" />
+  <line x1="100" y1="20" x2="100" y2="180" stroke="url(#gridGrad)" stroke-width="2" />
+  <line x1="20" y1="100" x2="180" y2="100" stroke="url(#gridGrad)" stroke-width="2.5" />
+  <path d="M 30 70 Q 100 90 170 70" fill="none" stroke="url(#gridGrad)" stroke-width="2" />
+  <path d="M 30 130 Q 100 110 170 130" fill="none" stroke="url(#gridGrad)" stroke-width="2" />
+  <path d="M 45 45 Q 100 65 155 45" fill="none" stroke="url(#gridGrad)" stroke-width="1.5" />
+  <path d="M 45 155 Q 100 135 155 155" fill="none" stroke="url(#gridGrad)" stroke-width="1.5" />
+  <text x="100" y="112" font-family="'Inter', sans-serif" font-size="36" font-weight="900" fill="#ffffff" text-anchor="middle" style="letter-spacing: -2px;">N</text>
+</svg>
+      <span class="logo-text">Nancy&#x27;s wiki</span>
+    </a>
+  </div>
+  <div class="portal" role="navigation" id="p-navigation">
+    <h3>Navigation</h3>
+    <ul>
+      <li><a href="/wiki/">Main page</a></li>
+      <li><a href="javascript:void(0)" onclick="goToRandomArticle()" title="Load a random page">Random article</a></li>
+    </ul>
+  </div>
+  <div class="portal" role="navigation" id="p-tools">
+    <h3>Tools</h3>
+    <ul>
+      <li><a href="#view-metadata-content" onclick="switchTab('metadata'); return false;">View metadata</a></li>
+      <li><a href="javascript:void(0)" onclick="switchTab('source')">View page source</a></li>
+    </ul>
+  </div>
+  
+</aside>
+
+<!-- Vector tabs wrapper -->
+<div class="vector-navigation-wrapper">
+  <div class="vector-navigation-left">
+    <ul class="vector-tabs">
+      <li id="ca-read" class="selected"><a href="javascript:void(0)" onclick="switchTab('read')">Article</a></li>
+      <li id="ca-talk"><a href="javascript:void(0)" onclick="switchTab('talk')">Talk / Notes</a></li>
+    </ul>
+  </div>
+  <div class="vector-navigation-right">
+    <ul class="vector-tabs">
+      <li id="ca-source"><a href="javascript:void(0)" onclick="switchTab('source')">View source</a></li>
+      <li id="ca-metadata"><a href="#view-metadata-content" onclick="switchTab('metadata'); return false;">Metadata</a></li>
+    </ul>
+  </div>
+  <div class="vector-navigation-search">
+    <div id="p-search" role="search">
+      <div class="search-container">
+        <input type="search" id="searchInput" placeholder="Search Nancy&#x27;s wiki" class="search-input" oninput="onSearchInput(event)" onkeydown="handleSearchKey(event)">
+        <button class="search-button" type="button" aria-label="Search" onclick="triggerSearch()">&#x1F50D;</button>
+      </div>
+      <div id="search-suggestions" class="search-suggestions" style="display: none;"></div>
+      <template id="search-suggestion-template">
+        <div class="suggestion-item" role="option" tabindex="-1">
+          <span class="suggestion-title"></span>
+          <span class="suggestion-type"></span>
+        </div>
+      </template>
+      <template id="search-empty-template">
+        <div class="suggestion-item suggestion-item-empty" role="status">No matches found</div>
+      </template>
+    </div>
+  </div>
+</div>
+
+<!-- Main Content Panel -->
+<main id="content" class="mw-body" role="main">
+  <div class="page-shell layout-default">
+    
+
+    <!-- READ VIEW (Rendered Article) -->
+    <div id="view-read-content" class="wiki-view-pane">
+      <div class="layout-label">NodeShape</div>
+      <h1 class="firstHeading" id="firstHeading">Person shape</h1>
+
+      <article id="article-top">
+        <section class="infobox page-meta">
+<h2>Infobox</h2>
+<dl>
+<dt>sh:targetClass</dt><dd>schema:Person</dd><dt>sh:property</dt><dd><ul class="infobox-list"><li class="infobox-list-block"><div class="infobox-dict"><div class="infobox-dict-row"><span class="infobox-key">sh:path</span><span>schema:givenName</span></div><div class="infobox-dict-row"><span class="infobox-key">sh:datatype</span><span>xsd:string</span></div><div class="infobox-dict-row"><span class="infobox-key">sh:minCount</span><span>1</span></div></div></li><li class="infobox-list-block"><div class="infobox-dict"><div class="infobox-dict-row"><span class="infobox-key">sh:path</span><span>schema:familyName</span></div><div class="infobox-dict-row"><span class="infobox-key">sh:datatype</span><span>xsd:string</span></div><div class="infobox-dict-row"><span class="infobox-key">sh:minCount</span><span>1</span></div></div></li></ul></dd>
+</dl>
+</section>
+        <p>Defines validation rules for Person profiles in this wiki.</p>
+
+      </article>
+
+      
+      
+      <div class="catlinks" id="catlinks">
+<div class="catlinks-label">Categories:</div>
+<ul class="catlinks-list">
+<li class="catlinks-item"><a href="/wiki/?category=NodeShape">NodeShape</a></li>
+</ul>
+</div>
+    </div>
+
+    <!-- TALK VIEW (Local persistent notes) -->
+    <div id="view-talk-content" class="wiki-view-pane" style="display: none;">
+      <h1 class="firstHeading">Talk / Local Notes: Person shape</h1>
+      <div id="siteSub">Your personal scratchpad for this page (saved locally in browser)</div>
+
+      <textarea id="talkNotesArea" class="wiki-textarea" placeholder="Write your notes or discussion comments here..." oninput="saveTalkNotes()"></textarea>
+      <div class="wiki-btn-bar">
+        <button type="button" class="wiki-btn" onclick="clearTalkNotes()">Clear Notes</button>
+        <span class="char-counter" id="charCountDisplay">0 characters</span>
+      </div>
+    </div>
+
+    <!-- VIEW SOURCE VIEW (Raw markdown source) -->
+    <div id="view-source-content" class="wiki-view-pane" style="display: none;">
+      <h1 class="firstHeading">View Source: Person shape</h1>
+      <div id="siteSub">Raw Markdown source code of the document</div>
+
+      <textarea id="markdownSourceArea" class="wiki-textarea" readonly style="background: #fafafa; font-family: monospace;"># Person shape
+
+Defines validation rules for Person profiles in this wiki.</textarea>
+      <div class="wiki-btn-bar">
+        <button type="button" id="copySourceBtn" class="wiki-btn wiki-btn-primary" onclick="copySourceCode()">Copy Markdown</button>
+      </div>
+    </div>
+
+    <!-- METADATA VIEW (RDF frontmatter) -->
+    <div id="view-metadata-content" class="wiki-view-pane" style="display: none;">
+      <h1 class="firstHeading">Metadata: Person shape</h1>
+      <div id="siteSub">RDF representation compiled from frontmatter</div>
+      
+      <section class="page-meta metadata-panel">
+<div class="metadata-format-switch" role="group" aria-label="Metadata RDF format">
+  <div class="metadata-format-toolbar">
+    <span class="metadata-format-heading">Format</span>
+    <div class="metadata-format-options"><input class="metadata-format-input" type="radio" name="metadata-format-person_shape" id="metadata-format-person_shape-json-ld-compacted" value="json-ld-compacted" checked="checked"><label class="metadata-format-label" for="metadata-format-person_shape-json-ld-compacted">JSON-LD</label><input class="metadata-format-input" type="radio" name="metadata-format-person_shape" id="metadata-format-person_shape-turtle" value="turtle"><label class="metadata-format-label" for="metadata-format-person_shape-turtle">Turtle</label><input class="metadata-format-input" type="radio" name="metadata-format-person_shape" id="metadata-format-person_shape-n3" value="n3"><label class="metadata-format-label" for="metadata-format-person_shape-n3">N3</label><input class="metadata-format-input" type="radio" name="metadata-format-person_shape" id="metadata-format-person_shape-xml" value="xml"><label class="metadata-format-label" for="metadata-format-person_shape-xml">RDF/XML</label><input class="metadata-format-input" type="radio" name="metadata-format-person_shape" id="metadata-format-person_shape-nt" value="nt"><label class="metadata-format-label" for="metadata-format-person_shape-nt">NT</label><input class="metadata-format-input" type="radio" name="metadata-format-person_shape" id="metadata-format-person_shape-trig" value="trig"><label class="metadata-format-label" for="metadata-format-person_shape-trig">TriG</label><input class="metadata-format-input" type="radio" name="metadata-format-person_shape" id="metadata-format-person_shape-nquads" value="nquads"><label class="metadata-format-label" for="metadata-format-person_shape-nquads">NQ</label></div>
+  </div>
+  <div class="metadata-format-panels">
+    <div class="metadata-format-panel metadata-format-panel-json-ld-compacted"><pre data-copy="{
+  &quot;@context&quot;: {
+    &quot;schema&quot;: &quot;https://schema.org/&quot;,
+    &quot;sh&quot;: &quot;http://www.w3.org/ns/shacl#&quot;,
+    &quot;wiki&quot;: &quot;https://nancy-kataria.github.io/wiki/&quot;,
+    &quot;xsd&quot;: &quot;http://www.w3.org/2001/XMLSchema#&quot;
+  },
+  &quot;@graph&quot;: [
+    {
+      &quot;@id&quot;: &quot;_:blank-shproperty-4348148800&quot;,
+      &quot;sh:datatype&quot;: {
+        &quot;@id&quot;: &quot;xsd:string&quot;
+      },
+      &quot;sh:minCount&quot;: 1,
+      &quot;sh:path&quot;: {
+        &quot;@id&quot;: &quot;schema:familyName&quot;
+      }
+    },
+    {
+      &quot;@id&quot;: &quot;wiki:PersonShape&quot;,
+      &quot;@type&quot;: &quot;sh:NodeShape&quot;,
+      &quot;sh:property&quot;: [
+        {
+          &quot;@id&quot;: &quot;_:blank-shproperty-4348142592&quot;
+        },
+        {
+          &quot;@id&quot;: &quot;_:blank-shproperty-4348148800&quot;
+        }
+      ],
+      &quot;sh:targetClass&quot;: {
+        &quot;@id&quot;: &quot;schema:Person&quot;
+      }
+    },
+    {
+      &quot;@id&quot;: &quot;_:blank-shproperty-4348142592&quot;,
+      &quot;sh:datatype&quot;: {
+        &quot;@id&quot;: &quot;xsd:string&quot;
+      },
+      &quot;sh:minCount&quot;: 1,
+      &quot;sh:path&quot;: {
+        &quot;@id&quot;: &quot;schema:givenName&quot;
+      }
+    }
+  ]
+}" class="highlight"><code class="language-json"><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;@context&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;schema&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://schema.org/&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;sh&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;http://www.w3.org/ns/shacl#&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;wiki&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://nancy-kataria.github.io/wiki/&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;xsd&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;http://www.w3.org/2001/XMLSchema#&quot;</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;@graph&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;@id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;_:blank-shproperty-4348148800&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;sh:datatype&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;@id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;xsd:string&quot;</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;sh:minCount&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;sh:path&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;@id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;schema:familyName&quot;</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;@id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;wiki:PersonShape&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;@type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;sh:NodeShape&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;sh:property&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">&quot;@id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;_:blank-shproperty-4348142592&quot;</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">&quot;@id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;_:blank-shproperty-4348148800&quot;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">      </span><span class="p">],</span>
+<span class="w">      </span><span class="nt">&quot;sh:targetClass&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;@id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;schema:Person&quot;</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;@id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;_:blank-shproperty-4348142592&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;sh:datatype&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;@id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;xsd:string&quot;</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;sh:minCount&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;sh:path&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;@id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;schema:givenName&quot;</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">]</span>
+<span class="p">}</span>
+</code></pre>
+</div><div class="metadata-format-panel metadata-format-panel-turtle"><pre data-copy="@prefix schema: &lt;https://schema.org/&gt; .
+@prefix sh: &lt;http://www.w3.org/ns/shacl#&gt; .
+@prefix wiki: &lt;https://nancy-kataria.github.io/wiki/&gt; .
+@prefix xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt; .
+
+wiki:PersonShape a sh:NodeShape ;
+    sh:property &lt;_:blank-shproperty-4348142592&gt;,
+        &lt;_:blank-shproperty-4348148800&gt; ;
+    sh:targetClass schema:Person .
+
+&lt;_:blank-shproperty-4348142592&gt; sh:datatype xsd:string ;
+    sh:minCount 1 ;
+    sh:path schema:givenName .
+
+&lt;_:blank-shproperty-4348148800&gt; sh:datatype xsd:string ;
+    sh:minCount 1 ;
+    sh:path schema:familyName .
+
+" class="highlight"><code class="language-turtle"><span class="k">@prefix</span><span class="w"> </span><span class="nn">schema:</span><span class="w"> </span><span class="nv">&lt;https://schema.org/&gt;</span><span class="w"> </span><span class="p">.</span>
+<span class="k">@prefix</span><span class="w"> </span><span class="nn">sh:</span><span class="w"> </span><span class="nv">&lt;http://www.w3.org/ns/shacl#&gt;</span><span class="w"> </span><span class="p">.</span>
+<span class="k">@prefix</span><span class="w"> </span><span class="nn">wiki:</span><span class="w"> </span><span class="nv">&lt;https://nancy-kataria.github.io/wiki/&gt;</span><span class="w"> </span><span class="p">.</span>
+<span class="k">@prefix</span><span class="w"> </span><span class="nn">xsd:</span><span class="w"> </span><span class="nv">&lt;http://www.w3.org/2001/XMLSchema#&gt;</span><span class="w"> </span><span class="p">.</span>
+
+<span class="nn">wiki</span><span class="p">:</span><span class="nt">PersonShape</span> <span class="kt">a</span> <span class="nn">sh</span><span class="p">:</span><span class="nt">NodeShape</span> <span class="p">;</span>
+    <span class="nn">sh</span><span class="p">:</span><span class="nt">property</span> <span class="nv">&lt;_:blank-shproperty-4348142592&gt;</span><span class="p">,</span>
+        <span class="nv">&lt;_:blank-shproperty-4348148800&gt;</span> <span class="p">;</span>
+    <span class="nn">sh</span><span class="p">:</span><span class="nt">targetClass</span> <span class="nn">schema</span><span class="p">:</span><span class="nt">Person</span> <span class="p">.</span>
+
+<span class="nv">&lt;_:blank-shproperty-4348142592&gt;</span> <span class="nn">sh</span><span class="p">:</span><span class="nt">datatype</span> <span class="nn">xsd</span><span class="p">:</span><span class="nt">string</span> <span class="p">;</span>
+    <span class="nn">sh</span><span class="p">:</span><span class="nt">minCount</span> <span class="mi">1</span> <span class="p">;</span>
+    <span class="nn">sh</span><span class="p">:</span><span class="nt">path</span> <span class="nn">schema</span><span class="p">:</span><span class="nt">givenName</span> <span class="p">.</span>
+
+<span class="nv">&lt;_:blank-shproperty-4348148800&gt;</span> <span class="nn">sh</span><span class="p">:</span><span class="nt">datatype</span> <span class="nn">xsd</span><span class="p">:</span><span class="nt">string</span> <span class="p">;</span>
+    <span class="nn">sh</span><span class="p">:</span><span class="nt">minCount</span> <span class="mi">1</span> <span class="p">;</span>
+    <span class="nn">sh</span><span class="p">:</span><span class="nt">path</span> <span class="nn">schema</span><span class="p">:</span><span class="nt">familyName</span> <span class="p">.</span>
+</code></pre>
+</div><div class="metadata-format-panel metadata-format-panel-n3"><pre data-copy="@prefix schema: &lt;https://schema.org/&gt; .
+@prefix sh: &lt;http://www.w3.org/ns/shacl#&gt; .
+@prefix wiki: &lt;https://nancy-kataria.github.io/wiki/&gt; .
+@prefix xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt; .
+
+wiki:PersonShape a sh:NodeShape ;
+    sh:property &lt;_:blank-shproperty-4348142592&gt;,
+        &lt;_:blank-shproperty-4348148800&gt; ;
+    sh:targetClass schema:Person .
+
+&lt;_:blank-shproperty-4348142592&gt; sh:datatype xsd:string ;
+    sh:minCount 1 ;
+    sh:path schema:givenName .
+
+&lt;_:blank-shproperty-4348148800&gt; sh:datatype xsd:string ;
+    sh:minCount 1 ;
+    sh:path schema:familyName .
+
+" class="highlight"><code class="language-n3"><span class="k">@prefix</span><span class="w"> </span><span class="nn">schema:</span><span class="w"> </span><span class="nv">&lt;https://schema.org/&gt;</span><span class="w"> </span><span class="p">.</span>
+<span class="k">@prefix</span><span class="w"> </span><span class="nn">sh:</span><span class="w"> </span><span class="nv">&lt;http://www.w3.org/ns/shacl#&gt;</span><span class="w"> </span><span class="p">.</span>
+<span class="k">@prefix</span><span class="w"> </span><span class="nn">wiki:</span><span class="w"> </span><span class="nv">&lt;https://nancy-kataria.github.io/wiki/&gt;</span><span class="w"> </span><span class="p">.</span>
+<span class="k">@prefix</span><span class="w"> </span><span class="nn">xsd:</span><span class="w"> </span><span class="nv">&lt;http://www.w3.org/2001/XMLSchema#&gt;</span><span class="w"> </span><span class="p">.</span>
+
+<span class="nn">wiki</span><span class="p">:</span><span class="nt">PersonShape</span> <span class="kt">a</span> <span class="nn">sh</span><span class="p">:</span><span class="nt">NodeShape</span> <span class="p">;</span>
+    <span class="nn">sh</span><span class="p">:</span><span class="nt">property</span> <span class="nv">&lt;_:blank-shproperty-4348142592&gt;</span><span class="p">,</span>
+        <span class="nv">&lt;_:blank-shproperty-4348148800&gt;</span> <span class="p">;</span>
+    <span class="nn">sh</span><span class="p">:</span><span class="nt">targetClass</span> <span class="nn">schema</span><span class="p">:</span><span class="nt">Person</span> <span class="p">.</span>
+
+<span class="nv">&lt;_:blank-shproperty-4348142592&gt;</span> <span class="nn">sh</span><span class="p">:</span><span class="nt">datatype</span> <span class="nn">xsd</span><span class="p">:</span><span class="nt">string</span> <span class="p">;</span>
+    <span class="nn">sh</span><span class="p">:</span><span class="nt">minCount</span> <span class="mi">1</span> <span class="p">;</span>
+    <span class="nn">sh</span><span class="p">:</span><span class="nt">path</span> <span class="nn">schema</span><span class="p">:</span><span class="nt">givenName</span> <span class="p">.</span>
+
+<span class="nv">&lt;_:blank-shproperty-4348148800&gt;</span> <span class="nn">sh</span><span class="p">:</span><span class="nt">datatype</span> <span class="nn">xsd</span><span class="p">:</span><span class="nt">string</span> <span class="p">;</span>
+    <span class="nn">sh</span><span class="p">:</span><span class="nt">minCount</span> <span class="mi">1</span> <span class="p">;</span>
+    <span class="nn">sh</span><span class="p">:</span><span class="nt">path</span> <span class="nn">schema</span><span class="p">:</span><span class="nt">familyName</span> <span class="p">.</span>
+</code></pre>
+</div><div class="metadata-format-panel metadata-format-panel-xml"><pre data-copy="&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;rdf:RDF
+   xmlns:rdf=&quot;http://www.w3.org/1999/02/22-rdf-syntax-ns#&quot;
+   xmlns:sh=&quot;http://www.w3.org/ns/shacl#&quot;
+&gt;
+  &lt;rdf:Description rdf:about=&quot;_:blank-shproperty-4348148800&quot;&gt;
+    &lt;sh:path rdf:resource=&quot;https://schema.org/familyName&quot;/&gt;
+    &lt;sh:datatype rdf:resource=&quot;http://www.w3.org/2001/XMLSchema#string&quot;/&gt;
+    &lt;sh:minCount rdf:datatype=&quot;http://www.w3.org/2001/XMLSchema#integer&quot;&gt;1&lt;/sh:minCount&gt;
+  &lt;/rdf:Description&gt;
+  &lt;rdf:Description rdf:about=&quot;https://nancy-kataria.github.io/wiki/PersonShape&quot;&gt;
+    &lt;rdf:type rdf:resource=&quot;http://www.w3.org/ns/shacl#NodeShape&quot;/&gt;
+    &lt;sh:targetClass rdf:resource=&quot;https://schema.org/Person&quot;/&gt;
+    &lt;sh:property rdf:resource=&quot;_:blank-shproperty-4348142592&quot;/&gt;
+    &lt;sh:property rdf:resource=&quot;_:blank-shproperty-4348148800&quot;/&gt;
+  &lt;/rdf:Description&gt;
+  &lt;rdf:Description rdf:about=&quot;_:blank-shproperty-4348142592&quot;&gt;
+    &lt;sh:path rdf:resource=&quot;https://schema.org/givenName&quot;/&gt;
+    &lt;sh:datatype rdf:resource=&quot;http://www.w3.org/2001/XMLSchema#string&quot;/&gt;
+    &lt;sh:minCount rdf:datatype=&quot;http://www.w3.org/2001/XMLSchema#integer&quot;&gt;1&lt;/sh:minCount&gt;
+  &lt;/rdf:Description&gt;
+&lt;/rdf:RDF&gt;
+" class="highlight"><code class="language-xml"><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span>
+<span class="nt">&lt;rdf:RDF</span>
+<span class="w">   </span><span class="na">xmlns:rdf=</span><span class="s">&quot;http://www.w3.org/1999/02/22-rdf-syntax-ns#&quot;</span>
+<span class="w">   </span><span class="na">xmlns:sh=</span><span class="s">&quot;http://www.w3.org/ns/shacl#&quot;</span>
+<span class="nt">&gt;</span>
+<span class="w">  </span><span class="nt">&lt;rdf:Description</span><span class="w"> </span><span class="na">rdf:about=</span><span class="s">&quot;_:blank-shproperty-4348148800&quot;</span><span class="nt">&gt;</span>
+<span class="w">    </span><span class="nt">&lt;sh:path</span><span class="w"> </span><span class="na">rdf:resource=</span><span class="s">&quot;https://schema.org/familyName&quot;</span><span class="nt">/&gt;</span>
+<span class="w">    </span><span class="nt">&lt;sh:datatype</span><span class="w"> </span><span class="na">rdf:resource=</span><span class="s">&quot;http://www.w3.org/2001/XMLSchema#string&quot;</span><span class="nt">/&gt;</span>
+<span class="w">    </span><span class="nt">&lt;sh:minCount</span><span class="w"> </span><span class="na">rdf:datatype=</span><span class="s">&quot;http://www.w3.org/2001/XMLSchema#integer&quot;</span><span class="nt">&gt;</span>1<span class="nt">&lt;/sh:minCount&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/rdf:Description&gt;</span>
+<span class="w">  </span><span class="nt">&lt;rdf:Description</span><span class="w"> </span><span class="na">rdf:about=</span><span class="s">&quot;https://nancy-kataria.github.io/wiki/PersonShape&quot;</span><span class="nt">&gt;</span>
+<span class="w">    </span><span class="nt">&lt;rdf:type</span><span class="w"> </span><span class="na">rdf:resource=</span><span class="s">&quot;http://www.w3.org/ns/shacl#NodeShape&quot;</span><span class="nt">/&gt;</span>
+<span class="w">    </span><span class="nt">&lt;sh:targetClass</span><span class="w"> </span><span class="na">rdf:resource=</span><span class="s">&quot;https://schema.org/Person&quot;</span><span class="nt">/&gt;</span>
+<span class="w">    </span><span class="nt">&lt;sh:property</span><span class="w"> </span><span class="na">rdf:resource=</span><span class="s">&quot;_:blank-shproperty-4348142592&quot;</span><span class="nt">/&gt;</span>
+<span class="w">    </span><span class="nt">&lt;sh:property</span><span class="w"> </span><span class="na">rdf:resource=</span><span class="s">&quot;_:blank-shproperty-4348148800&quot;</span><span class="nt">/&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/rdf:Description&gt;</span>
+<span class="w">  </span><span class="nt">&lt;rdf:Description</span><span class="w"> </span><span class="na">rdf:about=</span><span class="s">&quot;_:blank-shproperty-4348142592&quot;</span><span class="nt">&gt;</span>
+<span class="w">    </span><span class="nt">&lt;sh:path</span><span class="w"> </span><span class="na">rdf:resource=</span><span class="s">&quot;https://schema.org/givenName&quot;</span><span class="nt">/&gt;</span>
+<span class="w">    </span><span class="nt">&lt;sh:datatype</span><span class="w"> </span><span class="na">rdf:resource=</span><span class="s">&quot;http://www.w3.org/2001/XMLSchema#string&quot;</span><span class="nt">/&gt;</span>
+<span class="w">    </span><span class="nt">&lt;sh:minCount</span><span class="w"> </span><span class="na">rdf:datatype=</span><span class="s">&quot;http://www.w3.org/2001/XMLSchema#integer&quot;</span><span class="nt">&gt;</span>1<span class="nt">&lt;/sh:minCount&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/rdf:Description&gt;</span>
+<span class="nt">&lt;/rdf:RDF&gt;</span>
+</code></pre>
+</div><div class="metadata-format-panel metadata-format-panel-nt"><pre data-copy="&lt;_:blank-shproperty-4348148800&gt; &lt;http://www.w3.org/ns/shacl#minCount&gt; &quot;1&quot;^^&lt;http://www.w3.org/2001/XMLSchema#integer&gt; .
+&lt;https://nancy-kataria.github.io/wiki/PersonShape&gt; &lt;http://www.w3.org/ns/shacl#property&gt; &lt;_:blank-shproperty-4348148800&gt; .
+&lt;_:blank-shproperty-4348148800&gt; &lt;http://www.w3.org/ns/shacl#path&gt; &lt;https://schema.org/familyName&gt; .
+&lt;https://nancy-kataria.github.io/wiki/PersonShape&gt; &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt; &lt;http://www.w3.org/ns/shacl#NodeShape&gt; .
+&lt;_:blank-shproperty-4348142592&gt; &lt;http://www.w3.org/ns/shacl#path&gt; &lt;https://schema.org/givenName&gt; .
+&lt;https://nancy-kataria.github.io/wiki/PersonShape&gt; &lt;http://www.w3.org/ns/shacl#targetClass&gt; &lt;https://schema.org/Person&gt; .
+&lt;https://nancy-kataria.github.io/wiki/PersonShape&gt; &lt;http://www.w3.org/ns/shacl#property&gt; &lt;_:blank-shproperty-4348142592&gt; .
+&lt;_:blank-shproperty-4348148800&gt; &lt;http://www.w3.org/ns/shacl#datatype&gt; &lt;http://www.w3.org/2001/XMLSchema#string&gt; .
+&lt;_:blank-shproperty-4348142592&gt; &lt;http://www.w3.org/ns/shacl#datatype&gt; &lt;http://www.w3.org/2001/XMLSchema#string&gt; .
+&lt;_:blank-shproperty-4348142592&gt; &lt;http://www.w3.org/ns/shacl#minCount&gt; &quot;1&quot;^^&lt;http://www.w3.org/2001/XMLSchema#integer&gt; .
+" class="highlight"><code class="language-nt"><span class="nv">&lt;_:blank-shproperty-4348148800&gt;</span> <span class="nv">&lt;http://www.w3.org/ns/shacl#minCount&gt;</span> <span class="s">&quot;1&quot;</span><span class="o">^^</span><span class="ge">&lt;http://www.w3.org/2001/XMLSchema#integer&gt;</span> <span class="p">.</span>
+<span class="nv">&lt;https://nancy-kataria.github.io/wiki/PersonShape&gt;</span> <span class="nv">&lt;http://www.w3.org/ns/shacl#property&gt;</span> <span class="nv">&lt;_:blank-shproperty-4348148800&gt;</span> <span class="p">.</span>
+<span class="nv">&lt;_:blank-shproperty-4348148800&gt;</span> <span class="nv">&lt;http://www.w3.org/ns/shacl#path&gt;</span> <span class="nv">&lt;https://schema.org/familyName&gt;</span> <span class="p">.</span>
+<span class="nv">&lt;https://nancy-kataria.github.io/wiki/PersonShape&gt;</span> <span class="nv">&lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt;</span> <span class="nv">&lt;http://www.w3.org/ns/shacl#NodeShape&gt;</span> <span class="p">.</span>
+<span class="nv">&lt;_:blank-shproperty-4348142592&gt;</span> <span class="nv">&lt;http://www.w3.org/ns/shacl#path&gt;</span> <span class="nv">&lt;https://schema.org/givenName&gt;</span> <span class="p">.</span>
+<span class="nv">&lt;https://nancy-kataria.github.io/wiki/PersonShape&gt;</span> <span class="nv">&lt;http://www.w3.org/ns/shacl#targetClass&gt;</span> <span class="nv">&lt;https://schema.org/Person&gt;</span> <span class="p">.</span>
+<span class="nv">&lt;https://nancy-kataria.github.io/wiki/PersonShape&gt;</span> <span class="nv">&lt;http://www.w3.org/ns/shacl#property&gt;</span> <span class="nv">&lt;_:blank-shproperty-4348142592&gt;</span> <span class="p">.</span>
+<span class="nv">&lt;_:blank-shproperty-4348148800&gt;</span> <span class="nv">&lt;http://www.w3.org/ns/shacl#datatype&gt;</span> <span class="nv">&lt;http://www.w3.org/2001/XMLSchema#string&gt;</span> <span class="p">.</span>
+<span class="nv">&lt;_:blank-shproperty-4348142592&gt;</span> <span class="nv">&lt;http://www.w3.org/ns/shacl#datatype&gt;</span> <span class="nv">&lt;http://www.w3.org/2001/XMLSchema#string&gt;</span> <span class="p">.</span>
+<span class="nv">&lt;_:blank-shproperty-4348142592&gt;</span> <span class="nv">&lt;http://www.w3.org/ns/shacl#minCount&gt;</span> <span class="s">&quot;1&quot;</span><span class="o">^^</span><span class="ge">&lt;http://www.w3.org/2001/XMLSchema#integer&gt;</span> <span class="p">.</span>
+</code></pre>
+</div><div class="metadata-format-panel metadata-format-panel-trig"><pre data-copy="@prefix schema: &lt;https://schema.org/&gt; .
+@prefix sh: &lt;http://www.w3.org/ns/shacl#&gt; .
+@prefix wiki: &lt;https://nancy-kataria.github.io/wiki/&gt; .
+@prefix xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt; .
+
+_:N32c8c0326b854b6daab21bb251ca793d {
+    wiki:PersonShape a sh:NodeShape ;
+        sh:property &lt;_:blank-shproperty-4348142592&gt;,
+            &lt;_:blank-shproperty-4348148800&gt; ;
+        sh:targetClass schema:Person .
+
+    &lt;_:blank-shproperty-4348142592&gt; sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:path schema:givenName .
+
+    &lt;_:blank-shproperty-4348148800&gt; sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:path schema:familyName .
+}
+
+" class="highlight"><code class="language-trig"><span class="k">@prefix</span><span class="w"> </span><span class="nn">schema:</span><span class="w"> </span><span class="nv">&lt;https://schema.org/&gt;</span><span class="w"> </span><span class="p">.</span>
+<span class="k">@prefix</span><span class="w"> </span><span class="nn">sh:</span><span class="w"> </span><span class="nv">&lt;http://www.w3.org/ns/shacl#&gt;</span><span class="w"> </span><span class="p">.</span>
+<span class="k">@prefix</span><span class="w"> </span><span class="nn">wiki:</span><span class="w"> </span><span class="nv">&lt;https://nancy-kataria.github.io/wiki/&gt;</span><span class="w"> </span><span class="p">.</span>
+<span class="k">@prefix</span><span class="w"> </span><span class="nn">xsd:</span><span class="w"> </span><span class="nv">&lt;http://www.w3.org/2001/XMLSchema#&gt;</span><span class="w"> </span><span class="p">.</span>
+
+<span class="nn">_</span><span class="p">:</span><span class="nt">N32c8c0326b854b6daab21bb251ca793d</span> <span class="p">{</span>
+    <span class="nn">wiki</span><span class="p">:</span><span class="nt">PersonShape</span> <span class="kt">a</span> <span class="nn">sh</span><span class="p">:</span><span class="nt">NodeShape</span> <span class="p">;</span>
+        <span class="nn">sh</span><span class="p">:</span><span class="nt">property</span> <span class="nv">&lt;_:blank-shproperty-4348142592&gt;</span><span class="p">,</span>
+            <span class="nv">&lt;_:blank-shproperty-4348148800&gt;</span> <span class="p">;</span>
+        <span class="nn">sh</span><span class="p">:</span><span class="nt">targetClass</span> <span class="nn">schema</span><span class="p">:</span><span class="nt">Person</span> <span class="p">.</span>
+
+    <span class="nv">&lt;_:blank-shproperty-4348142592&gt;</span> <span class="nn">sh</span><span class="p">:</span><span class="nt">datatype</span> <span class="nn">xsd</span><span class="p">:</span><span class="nt">string</span> <span class="p">;</span>
+        <span class="nn">sh</span><span class="p">:</span><span class="nt">minCount</span> <span class="mi">1</span> <span class="p">;</span>
+        <span class="nn">sh</span><span class="p">:</span><span class="nt">path</span> <span class="nn">schema</span><span class="p">:</span><span class="nt">givenName</span> <span class="p">.</span>
+
+    <span class="nv">&lt;_:blank-shproperty-4348148800&gt;</span> <span class="nn">sh</span><span class="p">:</span><span class="nt">datatype</span> <span class="nn">xsd</span><span class="p">:</span><span class="nt">string</span> <span class="p">;</span>
+        <span class="nn">sh</span><span class="p">:</span><span class="nt">minCount</span> <span class="mi">1</span> <span class="p">;</span>
+        <span class="nn">sh</span><span class="p">:</span><span class="nt">path</span> <span class="nn">schema</span><span class="p">:</span><span class="nt">familyName</span> <span class="p">.</span>
+<span class="p">}</span>
+</code></pre>
+</div><div class="metadata-format-panel metadata-format-panel-nquads"><pre data-copy="&lt;_:blank-shproperty-4348148800&gt; &lt;http://www.w3.org/ns/shacl#minCount&gt; &quot;1&quot;^^&lt;http://www.w3.org/2001/XMLSchema#integer&gt; .
+&lt;https://nancy-kataria.github.io/wiki/PersonShape&gt; &lt;http://www.w3.org/ns/shacl#property&gt; &lt;_:blank-shproperty-4348148800&gt; .
+&lt;_:blank-shproperty-4348148800&gt; &lt;http://www.w3.org/ns/shacl#path&gt; &lt;https://schema.org/familyName&gt; .
+&lt;https://nancy-kataria.github.io/wiki/PersonShape&gt; &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt; &lt;http://www.w3.org/ns/shacl#NodeShape&gt; .
+&lt;_:blank-shproperty-4348142592&gt; &lt;http://www.w3.org/ns/shacl#path&gt; &lt;https://schema.org/givenName&gt; .
+&lt;https://nancy-kataria.github.io/wiki/PersonShape&gt; &lt;http://www.w3.org/ns/shacl#targetClass&gt; &lt;https://schema.org/Person&gt; .
+&lt;https://nancy-kataria.github.io/wiki/PersonShape&gt; &lt;http://www.w3.org/ns/shacl#property&gt; &lt;_:blank-shproperty-4348142592&gt; .
+&lt;_:blank-shproperty-4348148800&gt; &lt;http://www.w3.org/ns/shacl#datatype&gt; &lt;http://www.w3.org/2001/XMLSchema#string&gt; .
+&lt;_:blank-shproperty-4348142592&gt; &lt;http://www.w3.org/ns/shacl#datatype&gt; &lt;http://www.w3.org/2001/XMLSchema#string&gt; .
+&lt;_:blank-shproperty-4348142592&gt; &lt;http://www.w3.org/ns/shacl#minCount&gt; &quot;1&quot;^^&lt;http://www.w3.org/2001/XMLSchema#integer&gt; .
+" class="highlight"><code class="language-nt"><span class="nv">&lt;_:blank-shproperty-4348148800&gt;</span> <span class="nv">&lt;http://www.w3.org/ns/shacl#minCount&gt;</span> <span class="s">&quot;1&quot;</span><span class="o">^^</span><span class="ge">&lt;http://www.w3.org/2001/XMLSchema#integer&gt;</span> <span class="p">.</span>
+<span class="nv">&lt;https://nancy-kataria.github.io/wiki/PersonShape&gt;</span> <span class="nv">&lt;http://www.w3.org/ns/shacl#property&gt;</span> <span class="nv">&lt;_:blank-shproperty-4348148800&gt;</span> <span class="p">.</span>
+<span class="nv">&lt;_:blank-shproperty-4348148800&gt;</span> <span class="nv">&lt;http://www.w3.org/ns/shacl#path&gt;</span> <span class="nv">&lt;https://schema.org/familyName&gt;</span> <span class="p">.</span>
+<span class="nv">&lt;https://nancy-kataria.github.io/wiki/PersonShape&gt;</span> <span class="nv">&lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt;</span> <span class="nv">&lt;http://www.w3.org/ns/shacl#NodeShape&gt;</span> <span class="p">.</span>
+<span class="nv">&lt;_:blank-shproperty-4348142592&gt;</span> <span class="nv">&lt;http://www.w3.org/ns/shacl#path&gt;</span> <span class="nv">&lt;https://schema.org/givenName&gt;</span> <span class="p">.</span>
+<span class="nv">&lt;https://nancy-kataria.github.io/wiki/PersonShape&gt;</span> <span class="nv">&lt;http://www.w3.org/ns/shacl#targetClass&gt;</span> <span class="nv">&lt;https://schema.org/Person&gt;</span> <span class="p">.</span>
+<span class="nv">&lt;https://nancy-kataria.github.io/wiki/PersonShape&gt;</span> <span class="nv">&lt;http://www.w3.org/ns/shacl#property&gt;</span> <span class="nv">&lt;_:blank-shproperty-4348142592&gt;</span> <span class="p">.</span>
+<span class="nv">&lt;_:blank-shproperty-4348148800&gt;</span> <span class="nv">&lt;http://www.w3.org/ns/shacl#datatype&gt;</span> <span class="nv">&lt;http://www.w3.org/2001/XMLSchema#string&gt;</span> <span class="p">.</span>
+<span class="nv">&lt;_:blank-shproperty-4348142592&gt;</span> <span class="nv">&lt;http://www.w3.org/ns/shacl#datatype&gt;</span> <span class="nv">&lt;http://www.w3.org/2001/XMLSchema#string&gt;</span> <span class="p">.</span>
+<span class="nv">&lt;_:blank-shproperty-4348142592&gt;</span> <span class="nv">&lt;http://www.w3.org/ns/shacl#minCount&gt;</span> <span class="s">&quot;1&quot;</span><span class="o">^^</span><span class="ge">&lt;http://www.w3.org/2001/XMLSchema#integer&gt;</span> <span class="p">.</span>
+</code></pre>
+</div>
+  </div>
+</div>
+</section>
+    </div>
+
+    <!-- Standard Wikipedia-like Footer -->
+    <footer class="wiki-footer">
+      <p>Powered by the <a href="https://github.com/wazootech/wiki">Wiki CLI</a>.</p>
+    </footer>
+  </div>
+</main>
+
+<script>
+const ALL_PAGES = [{"slug": "Nancy_Kataria", "title": "Nancy Kataria"}, {"slug": "Person_Shape", "title": "Person shape"}];
+const WIKI_BASE_URL = "/wiki";
+const WIKI_URL_STYLE = "dir";
+const CURRENT_SLUG = "Person_Shape";
+
+let selectedSuggestionIndex = -1;
+
+function pageUrl(slug) {
+  if (WIKI_URL_STYLE === 'dir') {
+    return WIKI_BASE_URL + '/' + (slug ? slug + '/' : '');
+  }
+  return WIKI_BASE_URL + '/' + (slug ? slug + '.html' : 'index.html');
+}
+
+function switchTab(viewName) {
+  document.querySelectorAll('.vector-tabs li').forEach((li) => {
+    li.classList.remove('selected');
+  });
+
+  let tabId = 'ca-read';
+  if (viewName === 'talk') tabId = 'ca-talk';
+  else if (viewName === 'source') tabId = 'ca-source';
+  else if (viewName === 'metadata') tabId = 'ca-metadata';
+
+  const tabEl = document.getElementById(tabId);
+  if (tabEl) tabEl.classList.add('selected');
+
+  document.querySelectorAll('.wiki-view-pane').forEach((pane) => {
+    pane.style.display = 'none';
+  });
+
+  const paneEl = document.getElementById('view-' + viewName + '-content');
+  if (paneEl) paneEl.style.display = 'block';
+
+  if (viewName === 'talk') {
+    loadTalkNotes();
+  }
+}
+
+function loadTalkNotes() {
+  const area = document.getElementById('talkNotesArea');
+  if (!area) return;
+  const saved = localStorage.getItem('wiki_notes_' + CURRENT_SLUG);
+  area.value = saved || '';
+  updateCharCount();
+}
+
+function saveTalkNotes() {
+  const area = document.getElementById('talkNotesArea');
+  if (!area) return;
+  localStorage.setItem('wiki_notes_' + CURRENT_SLUG, area.value);
+  updateCharCount();
+}
+
+function clearTalkNotes() {
+  if (confirm('Are you sure you want to clear your local notes for this article?')) {
+    const area = document.getElementById('talkNotesArea');
+    if (area) {
+      area.value = '';
+      localStorage.removeItem('wiki_notes_' + CURRENT_SLUG);
+      updateCharCount();
+    }
+  }
+}
+
+function updateCharCount() {
+  const area = document.getElementById('talkNotesArea');
+  const countEl = document.getElementById('charCountDisplay');
+  if (!area || !countEl) return;
+  const count = area.value.length;
+  countEl.textContent = count + ' character' + (count === 1 ? '' : 's');
+}
+
+function copyTextWithFeedback(text, button) {
+  const write = navigator.clipboard?.writeText
+    ? navigator.clipboard.writeText(text)
+    : new Promise((resolve, reject) => {
+        const area = document.createElement('textarea');
+        area.value = text;
+        area.style.position = 'fixed';
+        area.style.left = '-9999px';
+        document.body.appendChild(area);
+        area.select();
+        try {
+          document.execCommand('copy') ? resolve() : reject();
+        } catch (err) {
+          reject(err);
+        } finally {
+          document.body.removeChild(area);
+        }
+      });
+
+  return write.then(() => {
+    const originalText = button.textContent;
+    button.textContent = 'Copied!';
+    button.classList.add('code-copy-btn-copied');
+    setTimeout(() => {
+      button.textContent = originalText;
+      button.classList.remove('code-copy-btn-copied');
+    }, 2000);
+  });
+}
+
+function copySourceCode() {
+  const area = document.getElementById('markdownSourceArea');
+  if (!area) return;
+  const btn = document.getElementById('copySourceBtn');
+  copyTextWithFeedback(area.value, btn);
+}
+
+function copyPreContent(pre, button) {
+  const text = pre.getAttribute('data-copy') ?? '';
+  copyTextWithFeedback(text, button);
+}
+
+function initCodeCopyButtons() {
+  document.querySelectorAll('pre[data-copy]:not([data-copy-ready])').forEach((pre) => {
+    pre.setAttribute('data-copy-ready', '');
+    const wrapper = document.createElement('div');
+    wrapper.className = 'code-block';
+    pre.parentNode.insertBefore(wrapper, pre);
+    wrapper.appendChild(pre);
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'code-copy-btn';
+    btn.setAttribute('aria-label', 'Copy code');
+    btn.textContent = 'Copy';
+    btn.addEventListener('click', () => copyPreContent(pre, btn));
+    wrapper.appendChild(btn);
+  });
+}
+
+function toggleToc() {
+  const list = document.getElementById('toc-list');
+  const toggleBtn = document.getElementById('toggleTocBtn');
+  if (!list || !toggleBtn) return;
+
+  if (list.style.display === 'none') {
+    list.style.display = 'block';
+    toggleBtn.textContent = '[hide]';
+    localStorage.setItem('wiki_toc_visible', 'true');
+  } else {
+    list.style.display = 'none';
+    toggleBtn.textContent = '[show]';
+    localStorage.setItem('wiki_toc_visible', 'false');
+  }
+}
+
+function goToRandomArticle() {
+  if (ALL_PAGES.length === 0) return;
+  const randomPage = ALL_PAGES[Math.floor(Math.random() * ALL_PAGES.length)];
+  window.location.href = pageUrl(randomPage.slug);
+}
+
+function triggerSearch() {
+  const query = document.getElementById('searchInput').value.toLowerCase().trim();
+  if (!query) return;
+  const matches = ALL_PAGES.filter((page) =>
+    page.title.toLowerCase().includes(query) || page.slug.toLowerCase().includes(query)
+  );
+  if (matches.length > 0) {
+    navigateSearch(matches[0].slug);
+  }
+}
+
+function renderSearchSuggestions(matches) {
+  const suggestionsBox = document.getElementById('search-suggestions');
+  const suggestionTemplate = document.getElementById('search-suggestion-template');
+  const emptyTemplate = document.getElementById('search-empty-template');
+  if (!suggestionsBox || !suggestionTemplate || !emptyTemplate) return;
+
+  suggestionsBox.replaceChildren();
+
+  if (matches.length === 0) {
+    suggestionsBox.appendChild(emptyTemplate.content.cloneNode(true));
+    suggestionsBox.style.display = 'block';
+    selectedSuggestionIndex = -1;
+    return;
+  }
+
+  const fragment = document.createDocumentFragment();
+  matches.forEach((page, idx) => {
+    const item = suggestionTemplate.content.firstElementChild.cloneNode(true);
+    item.dataset.slug = page.slug;
+    item.dataset.idx = String(idx);
+    item.querySelector('.suggestion-title').textContent = page.title;
+    item.querySelector('.suggestion-type').textContent = page.slug;
+    fragment.appendChild(item);
+  });
+  suggestionsBox.appendChild(fragment);
+  suggestionsBox.style.display = 'block';
+  selectedSuggestionIndex = -1;
+}
+
+function onSearchInput(e) {
+  const query = e.target.value.toLowerCase().trim();
+  const suggestionsBox = document.getElementById('search-suggestions');
+  if (!suggestionsBox) return;
+
+  if (!query) {
+    suggestionsBox.style.display = 'none';
+    suggestionsBox.replaceChildren();
+    selectedSuggestionIndex = -1;
+    return;
+  }
+
+  const matches = ALL_PAGES.filter((page) =>
+    page.title.toLowerCase().includes(query) || page.slug.toLowerCase().includes(query)
+  ).slice(0, 8);
+
+  renderSearchSuggestions(matches);
+}
+
+function handleSearchKey(e) {
+  const suggestionsBox = document.getElementById('search-suggestions');
+  if (!suggestionsBox || suggestionsBox.style.display === 'none') return;
+
+  const items = suggestionsBox.querySelectorAll('.suggestion-item:not(.suggestion-item-empty)');
+  if (items.length === 0) return;
+
+  if (e.key === 'ArrowDown') {
+    e.preventDefault();
+    selectedSuggestionIndex = (selectedSuggestionIndex + 1) % items.length;
+    highlightSuggestion(items);
+  } else if (e.key === 'ArrowUp') {
+    e.preventDefault();
+    selectedSuggestionIndex = (selectedSuggestionIndex - 1 + items.length) % items.length;
+    highlightSuggestion(items);
+  } else if (e.key === 'Enter') {
+    e.preventDefault();
+    const index = selectedSuggestionIndex >= 0 ? selectedSuggestionIndex : 0;
+    navigateSearch(items[index].dataset.slug);
+  } else if (e.key === 'Escape') {
+    suggestionsBox.style.display = 'none';
+  }
+}
+
+function highlightSuggestion(items) {
+  items.forEach((item, idx) => {
+    if (idx === selectedSuggestionIndex) {
+      item.classList.add('selected');
+      item.scrollIntoView({ block: 'nearest' });
+    } else {
+      item.classList.remove('selected');
+    }
+  });
+}
+
+function navigateSearch(slug) {
+  window.location.href = pageUrl(slug);
+}
+
+function applyCategoryFilterFromUrl() {
+  const params = new URLSearchParams(window.location.search);
+  const cat = params.get('category');
+  if (!cat) return;
+
+  const mainHeading = document.querySelector('main h1');
+  if (mainHeading) {
+    mainHeading.replaceChildren();
+    mainHeading.append('Pages in Category: ');
+    const catLabel = document.createElement('span');
+    catLabel.textContent = cat;
+    catLabel.style.color = '#54595d';
+    catLabel.style.fontFamily = 'sans-serif';
+    catLabel.style.fontSize = '0.85em';
+    mainHeading.append(catLabel);
+
+    const clearLink = document.createElement('a');
+    clearLink.href = WIKI_BASE_URL + '/';
+    clearLink.textContent = ' [show all pages]';
+    clearLink.style.fontSize = '0.5em';
+    clearLink.style.marginLeft = '12px';
+    clearLink.style.fontWeight = 'normal';
+    mainHeading.append(clearLink);
+  }
+
+  document.querySelectorAll('.pages-list li').forEach((li) => {
+    const catsAttr = li.getAttribute('data-categories') || '';
+    const cats = catsAttr.split(',').map((value) => value.trim().toLowerCase());
+    li.style.display = cats.includes(cat.toLowerCase()) ? '' : 'none';
+  });
+}
+
+document.addEventListener('click', (e) => {
+  const searchBox = document.getElementById('searchInput');
+  const suggestionsBox = document.getElementById('search-suggestions');
+  if (suggestionsBox && e.target !== searchBox && !suggestionsBox.contains(e.target)) {
+    suggestionsBox.style.display = 'none';
+  }
+});
+
+document.getElementById('search-suggestions')?.addEventListener('click', (e) => {
+  const item = e.target.closest('.suggestion-item:not(.suggestion-item-empty)');
+  if (item?.dataset.slug) {
+    navigateSearch(item.dataset.slug);
+  }
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+  const savedState = localStorage.getItem('wiki_toc_visible');
+  const list = document.getElementById('toc-list');
+  const toggleBtn = document.getElementById('toggleTocBtn');
+  if (savedState === 'false' && list && toggleBtn) {
+    list.style.display = 'none';
+    toggleBtn.textContent = '[show]';
+  }
+
+  if (CURRENT_SLUG === '' || CURRENT_SLUG === 'index') {
+    applyCategoryFilterFromUrl();
+  }
+
+  initCodeCopyButtons();
+});
+</script>
+</body>
+</html>
