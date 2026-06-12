@@ -1,37 +1,56 @@
-name: Build and Deploy Wiki
+name: Deploy Wiki to Pages
 
 on:
   push:
-    branches:
-      - main
+    branches: ["main"]
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
   pages: write
   id-token: write
 
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
 jobs:
-  build:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
+      - name: Checkout Repository
         uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v4
+      
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+      
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+      
+      - name: Install Dependencies
+        run: uv pip install wazootech-wiki
+      
+      - name: Run Wiki Integrity Audits
+        run: uv run wiki check --strict -v
 
-      - name: Install Wiki CLI
-        run: pip install wazootech-wiki
+      - name: Run Wiki Convention Audits
+        run: uv run wiki lint --strict -v
 
-      - name: Build wiki
-        run: wiki build
+      - name: Build Static Site
+        run: uv run wiki build --output-dir _site
+
+      - name: Upload Pages Artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: "_site/wiki"
 
       - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./_site
-          cname: nancy-kataria.github.io
+        id: deployment
+        uses: actions/deploy-pages@v4
