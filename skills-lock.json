@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "skills": {
+    "wiki-best-practices": {
+      "source": "wazootech/wiki",
+      "sourceType": "github",
+      "skillPath": "skills/wiki-best-practices/SKILL.md",
+      "computedHash": "48221d9beb8faf7f53a5177cd72211eaea0bd28c3520740b741efe16e364a86f"
+    },
+    "wiki-create": {
+      "source": "wazootech/wiki",
+      "sourceType": "github",
+      "skillPath": "skills/wiki-create/SKILL.md",
+      "computedHash": "f5fddb5b6f45fe325c67d7f45a62d885f540d70d630c1dfc6aa6e239cc33f791"
+    },
+    "wiki-install": {
+      "source": "wazootech/wiki",
+      "sourceType": "github",
+      "skillPath": "skills/wiki-install/SKILL.md",
+      "computedHash": "293a63d174e2f170e822511d470ae1c56accf6923dde16c9c76a3123fa1ce113"
+    }
+  }
+}
